@@ -1,5 +1,6 @@
 package com.jolyvert.online_food.controller;
 
+import com.jolyvert.online_food.dto.LoginDto;
 import com.jolyvert.online_food.dto.RegisterDto;
 import com.jolyvert.online_food.model.User;
 import com.jolyvert.online_food.service.UserService;
@@ -20,9 +21,14 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
-        boolean success = service.registerUser(registerDto.getName(), registerDto.getEmail(), registerDto.getPassword());
+        boolean success = service.registerUser(registerDto.getName(), registerDto.getEmail(), registerDto.getPassword(), registerDto.getRole());
         if (success) return ResponseEntity.ok("User registered");
         else return ResponseEntity.badRequest().body("Email already exists");
+    }
+
+    @PostMapping("/login")
+    public User login(@RequestBody LoginDto loginDto) {
+        return service.login(loginDto.getEmail(), loginDto.getPassword());
     }
 
     @GetMapping
